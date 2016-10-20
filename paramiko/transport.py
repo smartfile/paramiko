@@ -20,6 +20,7 @@
 Core protocol implementation
 """
 
+import logging
 import os
 import socket
 import sys
@@ -80,6 +81,9 @@ def _join_lingering_threads():
 
 import atexit
 atexit.register(_join_lingering_threads)
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 
 class Transport (threading.Thread, ClosingContextManager):
@@ -373,8 +377,7 @@ class Transport (threading.Thread, ClosingContextManager):
         self.clear_to_send_lock = threading.Lock()
         self.clear_to_send_timeout = 30.0
         self.log_name = 'paramiko.transport'
-        self.logger = util.get_logger(self.log_name)
-        self.packetizer.set_log(self.logger)
+        self.packetizer.set_log(LOGGER)
         self.auth_handler = None
         self.global_response = None     # response Message from an arbitrary global request
         self.completion_event = None    # user-defined event callbacks
@@ -1519,9 +1522,9 @@ class Transport (threading.Thread, ClosingContextManager):
     def _log(self, level, msg, *args):
         if issubclass(type(msg), list):
             for m in msg:
-                self.logger.log(level, m)
+                self._log(level, msg, *args)
         else:
-            self.logger.log(level, msg, *args)
+            LOGGER.log(level, msg, exc_info=True, *args)
 
     def _get_modulus_pack(self):
         """used by KexGex to find primes for group exchange"""
