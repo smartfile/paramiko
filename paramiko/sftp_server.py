@@ -91,7 +91,7 @@ class SFTPServer (BaseSFTP, SubsystemHandler):
     def _log(self, level, msg, *args):
         if issubclass(type(msg), list):
             for m in msg:
-                self._lot(level, msg, *args)
+                self._log(level, msg, *args)
         else:
             LOGGER.log(level, msg, exc_info=True, *args)
 
