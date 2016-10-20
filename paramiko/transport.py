@@ -1748,16 +1748,16 @@ class Transport (threading.Thread, ClosingContextManager):
                         self._send_message(msg)
                     self.packetizer.complete_handshake()
             except SSHException as e:
-                self._log(ERROR, "SSH Exception")
+                self._log(ERROR, str(e))
                 self.saved_exception = e
             except EOFError as e:
                 self._log(DEBUG, 'EOF in transport thread')
                 self.saved_exception = e
             except socket.error as e:
-                self._log(ERROR, "Socket Error")
+                self._log(ERROR, str(e))
                 self.saved_exception = e
             except Exception as e:
-                self._log(ERROR, "General Exception")
+                self._log(ERROR, str(e))
                 self.saved_exception = e
             _active_threads.remove(self)
             for chan in list(self._channels.values()):
