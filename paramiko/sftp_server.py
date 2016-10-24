@@ -20,10 +20,10 @@
 Server-mode SFTP support.
 """
 
+import logging
 import os
 import errno
 import sys
-import traceback
 from hashlib import md5, sha1
 
 from paramiko import util
@@ -49,6 +49,10 @@ _hash_class = {
     'sha1': sha1,
     'md5': md5,
 }
+
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 
 class SFTPServer (BaseSFTP, SubsystemHandler):
@@ -84,12 +88,12 @@ class SFTPServer (BaseSFTP, SubsystemHandler):
         self.folder_table = {}
         self.server = sftp_si(server, *largs, **kwargs)
 
-    def _log(self, level, msg):
+    def _log(self, level, msg, *args):
         if issubclass(type(msg), list):
             for m in msg:
-                super(SFTPServer, self)._log(level, m)
+                self._log(level, msg, *args)
         else:
-            super(SFTPServer, self)._log(level, msg)
+            LOGGER.log(level, msg, exc_info=True, *args)
 
     def start_subsystem(self, name, transport, channel):
         self.sock = channel
@@ -104,7 +108,6 @@ class SFTPServer (BaseSFTP, SubsystemHandler):
                 return
             except Exception as e:
                 self._log(ERROR, 'Exception on channel: ' + str(e))
-                self._log(ERROR, traceback.format_exc())
                 return
             msg = Message(data)
             request_number = msg.get_int()
@@ -112,7 +115,6 @@ class SFTPServer (BaseSFTP, SubsystemHandler):
                 self._process(t, request_number, msg)
             except Exception as e:
                 self._log(ERROR, 'Exception in server processing: ' + str(e))
-                self._log(ERROR, traceback.format_exc())
                 # send some kind of failure message, at least
                 try:
                     self._send_status(request_number, SFTP_FAILURE)
