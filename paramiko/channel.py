@@ -26,6 +26,7 @@ import socket
 import time
 import threading
 from functools import wraps
+import weakref
 
 from paramiko import util
 from paramiko.common import cMSG_CHANNEL_REQUEST, cMSG_CHANNEL_WINDOW_ADJUST, \
@@ -873,7 +874,7 @@ class Channel (ClosingContextManager):
     ###  calls from Transport
 
     def _set_transport(self, transport):
-        self.transport = transport
+        self.transport = weakref.proxy(transport)
         self.logger = util.get_logger(self.transport.get_log_channel())
 
     def _set_window(self, window_size, max_packet_size):
