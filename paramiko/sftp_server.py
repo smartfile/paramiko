@@ -352,6 +352,8 @@ class SFTPServer (BaseSFTP, SubsystemHandler):
                     self._send_status(request_number, SFTP_EOF)
                 else:
                     self._response(request_number, CMD_DATA, data)
+            elif data is None:
+                self._send_status(request_number, SFTP_EOF)
             else:
                 self._send_status(request_number, data)
         elif t == CMD_WRITE:
