@@ -20,7 +20,7 @@
 Some unit tests for the ssh2 protocol in Transport.
 """
 
-from __future__ import with_statement
+
 
 from binascii import hexlify
 import select

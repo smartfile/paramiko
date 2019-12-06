@@ -27,11 +27,11 @@ from hashlib import sha1
 from paramiko import util
 from paramiko.common import max_byte, zero_byte
 from paramiko.message import Message
-from paramiko.py3compat import byte_chr, long, byte_mask
+from paramiko.py3compat import byte_chr, int, byte_mask
 from paramiko.ssh_exception import SSHException
 
 
-_MSG_KEXDH_INIT, _MSG_KEXDH_REPLY = range(30, 32)
+_MSG_KEXDH_INIT, _MSG_KEXDH_REPLY = list(range(30, 32))
 c_MSG_KEXDH_INIT, c_MSG_KEXDH_REPLY = [byte_chr(c) for c in range(30, 32)]
 
 b7fffffffffffffff = byte_chr(0x7f) + max_byte * 7
@@ -49,9 +49,9 @@ class KexGroup1(object):
 
     def __init__(self, transport):
         self.transport = transport
-        self.x = long(0)
-        self.e = long(0)
-        self.f = long(0)
+        self.x = int(0)
+        self.e = int(0)
+        self.f = int(0)
 
     def start_kex(self):
         self._generate_x()

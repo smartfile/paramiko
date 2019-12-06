@@ -24,7 +24,7 @@ import struct
 
 from paramiko import util
 from paramiko.common import zero_byte, max_byte, one_byte, asbytes
-from paramiko.py3compat import long, BytesIO, u, integer_types
+from paramiko.py3compat import int, BytesIO, u, integer_types
 
 
 class Message (object):
@@ -38,7 +38,7 @@ class Message (object):
     paramiko doesn't support yet.
     """
 
-    big_int = long(0xff000000)
+    big_int = int(0xff000000)
 
     def __init__(self, content=None):
         """

@@ -48,7 +48,7 @@ if len(sys.argv) > 1:
     if hostname.find('@') >= 0:
         username, hostname = hostname.split('@')
 else:
-    hostname = input('Hostname: ')
+    hostname = eval(input('Hostname: '))
 if len(hostname) == 0:
     print('*** Hostname required.')
     sys.exit(1)
@@ -61,7 +61,7 @@ if hostname.find(':') >= 0:
 # get username
 if username == '':
     default_username = getpass.getuser()
-    username = input('Username [%s]: ' % default_username)
+    username = eval(input('Username [%s]: ' % default_username))
     if len(username) == 0:
         username = default_username
 if not UseGSSAPI or (not UseGSSAPI and not DoGSSAPIKeyExchange):
@@ -87,14 +87,14 @@ try:
             client.connect(hostname, port, username, password)
 
     chan = client.invoke_shell()
-    print(repr(client.get_transport()))
+    print((repr(client.get_transport())))
     print('*** Here we go!\n')
     interactive.interactive_shell(chan)
     chan.close()
     client.close()
 
 except Exception as e:
-    print('*** Caught exception: %s: %s' % (e.__class__, e))
+    print(('*** Caught exception: %s: %s' % (e.__class__, e)))
     traceback.print_exc()
     try:
         client.close()

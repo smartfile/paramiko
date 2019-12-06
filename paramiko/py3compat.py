@@ -8,21 +8,21 @@ __all__ = ['PY2', 'string_types', 'integer_types', 'text_type', 'bytes_types', '
 PY2 = sys.version_info[0] < 3
 
 if PY2:
-    string_types = basestring
-    text_type = unicode
+    string_types = str
+    text_type = str
     bytes_types = str
     bytes = str
-    integer_types = (int, long)
-    long = long
+    integer_types = (int, int)
+    long = int
     input = raw_input
     decodebytes = base64.decodestring
     encodebytes = base64.encodestring
 
-    import __builtin__ as builtins
+    import builtins as builtins
 
 
     def bytestring(s):  # NOQA
-        if isinstance(s, unicode):
+        if isinstance(s, str):
             return s.encode('utf-8')
         return s
 
@@ -39,7 +39,7 @@ if PY2:
         """cast unicode or bytes to bytes"""
         if isinstance(s, str):
             return s
-        elif isinstance(s, unicode):
+        elif isinstance(s, str):
             return s.encode(encoding)
         elif isinstance(s, buffer):
             return s
@@ -51,7 +51,7 @@ if PY2:
         """cast bytes or unicode to unicode"""
         if isinstance(s, str):
             return s.decode(encoding)
-        elif isinstance(s, unicode):
+        elif isinstance(s, str):
             return s
         elif isinstance(s, buffer):
             return s.decode(encoding)
@@ -64,13 +64,13 @@ if PY2:
 
 
     try:
-        import cStringIO
+        import io
 
-        StringIO = cStringIO.StringIO   # NOQA
+        StringIO = io.StringIO   # NOQA
     except ImportError:
-        import StringIO
+        import io
 
-        StringIO = StringIO.StringIO    # NOQA
+        StringIO = io.StringIO    # NOQA
 
     BytesIO = StringIO
 
@@ -80,11 +80,11 @@ if PY2:
 
 
     def get_next(c):  # NOQA
-        return c.next
+        return c.__next__
 
 
     def next(c):
-        return c.next()
+        return c.__next__()
 
     # It's possible to have sizeof(long) != sizeof(Py_ssize_t).
     class X(object):

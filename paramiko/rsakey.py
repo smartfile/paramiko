@@ -30,7 +30,7 @@ from paramiko.common import max_byte, zero_byte, one_byte
 from paramiko.message import Message
 from paramiko.ber import BER, BERException
 from paramiko.pkey import PKey
-from paramiko.py3compat import long
+from paramiko.py3compat import int
 from paramiko.ssh_exception import SSHException
 
 SHA1_DIGESTINFO = b'\x30\x21\x30\x09\x06\x05\x2b\x0e\x03\x02\x1a\x05\x00\x04\x14'
@@ -94,7 +94,7 @@ class RSAKey (PKey):
 
     def sign_ssh_data(self, data):
         digest = sha1(data).digest()
-        rsa = RSA.construct((long(self.n), long(self.e), long(self.d)))
+        rsa = RSA.construct((int(self.n), int(self.e), int(self.d)))
         sig = util.deflate_long(rsa.sign(self._pkcs1imify(digest), bytes())[0], 0)
         m = Message()
         m.add_string('ssh-rsa')
@@ -109,7 +109,7 @@ class RSAKey (PKey):
         # public key.  some wackiness ensues where we "pkcs1imify" the 20-byte
         # hash into a string as long as the RSA key.
         hash_obj = util.inflate_long(self._pkcs1imify(sha1(data).digest()), True)
-        rsa = RSA.construct((long(self.n), long(self.e)))
+        rsa = RSA.construct((int(self.n), int(self.e)))
         return rsa.verify(hash_obj, (sig,))
 
     def _encode_key(self):

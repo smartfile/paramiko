@@ -43,13 +43,13 @@ from hashlib import sha1
 from paramiko.common import *
 from paramiko import util
 from paramiko.message import Message
-from paramiko.py3compat import byte_chr, long, byte_mask, byte_ord
+from paramiko.py3compat import byte_chr, int, byte_mask, byte_ord
 from paramiko.ssh_exception import SSHException
 
 
 MSG_KEXGSS_INIT, MSG_KEXGSS_CONTINUE, MSG_KEXGSS_COMPLETE, MSG_KEXGSS_HOSTKEY,\
-MSG_KEXGSS_ERROR = range(30, 35)
-MSG_KEXGSS_GROUPREQ, MSG_KEXGSS_GROUP = range(40, 42)
+MSG_KEXGSS_ERROR = list(range(30, 35))
+MSG_KEXGSS_GROUPREQ, MSG_KEXGSS_GROUP = list(range(40, 42))
 c_MSG_KEXGSS_INIT, c_MSG_KEXGSS_CONTINUE, c_MSG_KEXGSS_COMPLETE,\
 c_MSG_KEXGSS_HOSTKEY, c_MSG_KEXGSS_ERROR = [byte_chr(c) for c in range(30, 35)]
 c_MSG_KEXGSS_GROUPREQ, c_MSG_KEXGSS_GROUP = [byte_chr(c) for c in range(40, 42)]

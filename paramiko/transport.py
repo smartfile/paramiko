@@ -55,7 +55,7 @@ from paramiko.kex_gss import KexGSSGex, KexGSSGroup1, KexGSSGroup14, NullHostKey
 from paramiko.message import Message
 from paramiko.packet import Packetizer, NeedRekeyException
 from paramiko.primes import ModulusPack
-from paramiko.py3compat import string_types, long, byte_ord, b
+from paramiko.py3compat import string_types, int, byte_ord, b
 from paramiko.rsakey import RSAKey
 from paramiko.ecdsakey import ECDSAKey
 from paramiko.server import ServerInterface
@@ -396,7 +396,7 @@ class Transport (threading.Thread, ClosingContextManager):
         """
         Returns a string representation of this object, for debugging.
         """
-        out = '<paramiko.Transport at %s' % hex(long(id(self)) & xffffffff)
+        out = '<paramiko.Transport at %s' % hex(int(id(self)) & xffffffff)
         if not self.active:
             out += ' (unconnected)'
         else:
@@ -1681,9 +1681,9 @@ class Transport (threading.Thread, ClosingContextManager):
         # active=True occurs before the thread is launched, to avoid a race
         _active_threads.append(self)
         if self.server_mode:
-            self._log(DEBUG, 'starting thread (server mode): %s' % hex(long(id(self)) & xffffffff))
+            self._log(DEBUG, 'starting thread (server mode): %s' % hex(int(id(self)) & xffffffff))
         else:
-            self._log(DEBUG, 'starting thread (client mode): %s' % hex(long(id(self)) & xffffffff))
+            self._log(DEBUG, 'starting thread (client mode): %s' % hex(int(id(self)) & xffffffff))
         try:
             try:
                 self.packetizer.write_all(b(self.local_version + '\r\n'))
@@ -1769,7 +1769,7 @@ class Transport (threading.Thread, ClosingContextManager):
                     self.completion_event.set()
                 if self.auth_handler is not None:
                     self.auth_handler.abort()
-                for event in self.channel_events.values():
+                for event in list(self.channel_events.values()):
                     event.set()
                 try:
                     self.lock.acquire()

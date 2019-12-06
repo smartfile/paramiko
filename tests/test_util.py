@@ -118,7 +118,7 @@ class UtilTest(unittest.TestCase):
         f = StringIO(test_config_file)
         config = paramiko.util.parse_ssh_config(f)
 
-        for host, values in {
+        for host, values in list({
             'irc.danger.com':   {'crazy': 'something dumb  ',
                                 'hostname': 'irc.danger.com',
                                 'user': 'robey'},
@@ -130,7 +130,7 @@ class UtilTest(unittest.TestCase):
                                 'hostname': 'spoo.example.com',
                                 'user': 'robey',
                                 'port': '3333'}
-        }.items():
+        }.items()):
             values = dict(values,
                 hostname=host,
                 identityfile=[os.path.expanduser("~/.ssh/id_rsa")]
@@ -280,7 +280,7 @@ ProxyCommand=foo=bar
 Host proxy-without-equal-divisor
 ProxyCommand foo=bar:%h-%p
     """
-        for host, values in {
+        for host, values in list({
             'proxy-with-equal-divisor-and-space'   :{'hostname': 'proxy-with-equal-divisor-and-space',
                                                      'proxycommand': 'foo=bar'},
             'proxy-with-equal-divisor-and-no-space':{'hostname': 'proxy-with-equal-divisor-and-no-space',
@@ -288,7 +288,7 @@ ProxyCommand foo=bar:%h-%p
             'proxy-without-equal-divisor'          :{'hostname': 'proxy-without-equal-divisor',
                                                      'proxycommand':
                                                      'foo=bar:proxy-without-equal-divisor-22'}
-        }.items():
+        }.items()):
 
             f = StringIO(test_config_file)
             config = paramiko.util.parse_ssh_config(f)
@@ -311,14 +311,14 @@ IdentityFile id_dsa2
 Host dsa2*
 IdentityFile id_dsa22
     """
-        for host, values in {
+        for host, values in list({
             'foo'   :{'hostname': 'foo',
                       'identityfile': ['id_dsa0', 'id_dsa1']},
             'dsa2'  :{'hostname': 'dsa2',
                       'identityfile': ['id_dsa0', 'id_dsa1', 'id_dsa2', 'id_dsa22']},
             'dsa22' :{'hostname': 'dsa22',
                       'identityfile': ['id_dsa0', 'id_dsa1', 'id_dsa22']}
-        }.items():
+        }.items()):
 
             f = StringIO(test_config_file)
             config = paramiko.util.parse_ssh_config(f)
@@ -386,8 +386,8 @@ Host param4 "p a r" "p" "par" para
         }
         f = StringIO(test_config_file)
         config = paramiko.util.parse_ssh_config(f)
-        for host, values in res.items():
-            self.assertEquals(
+        for host, values in list(res.items()):
+            self.assertEqual(
                 paramiko.util.lookup_ssh_host_config(host, config),
                 values
             )
@@ -416,8 +416,8 @@ Host param3 parara
         }
         f = StringIO(test_config_file)
         config = paramiko.util.parse_ssh_config(f)
-        for host, values in res.items():
-            self.assertEquals(
+        for host, values in list(res.items()):
+            self.assertEqual(
                 paramiko.util.lookup_ssh_host_config(host, config),
                 values
             )
@@ -446,8 +446,8 @@ Host param3 parara
             'param "pam',
             'param "pam" "p a',
         ]
-        for host, values in correct_data.items():
-            self.assertEquals(
+        for host, values in list(correct_data.items()):
+            self.assertEqual(
                 conf._get_hosts(host),
                 values
             )
@@ -473,10 +473,10 @@ Host proxycommand-standard-none
 Host proxycommand-with-equals-none
     ProxyCommand=None
     """
-        for host, values in {
+        for host, values in list({
             'proxycommand-standard-none':    {'hostname': 'proxycommand-standard-none'},
             'proxycommand-with-equals-none': {'hostname': 'proxycommand-with-equals-none'}
-        }.items():
+        }.items()):
 
             f = StringIO(test_config_file)
             config = paramiko.util.parse_ssh_config(f)

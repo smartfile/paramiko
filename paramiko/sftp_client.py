@@ -28,7 +28,7 @@ from paramiko import util
 from paramiko.channel import Channel
 from paramiko.message import Message
 from paramiko.common import INFO, DEBUG, o777
-from paramiko.py3compat import bytestring, b, u, long, string_types, bytes_types
+from paramiko.py3compat import bytestring, b, u, int, string_types, bytes_types
 from paramiko.sftp import BaseSFTP, CMD_OPENDIR, CMD_HANDLE, SFTPError, CMD_READDIR, \
     CMD_NAME, CMD_CLOSE, SFTP_FLAG_READ, SFTP_FLAG_WRITE, SFTP_FLAG_CREATE, \
     SFTP_FLAG_TRUNC, SFTP_FLAG_APPEND, SFTP_FLAG_EXCL, CMD_OPEN, CMD_REMOVE, \
@@ -736,7 +736,7 @@ class SFTPClient(BaseSFTP, ClosingContextManager):
             msg = Message()
             msg.add_int(self.request_number)
             for item in arg:
-                if isinstance(item, long):
+                if isinstance(item, int):
                     msg.add_int64(item)
                 elif isinstance(item, int):
                     msg.add_int(item)
@@ -784,7 +784,7 @@ class SFTPClient(BaseSFTP, ClosingContextManager):
         return None, None
 
     def _finish_responses(self, fileobj):
-        while fileobj in self._expecting.values():
+        while fileobj in list(self._expecting.values()):
             self._read_response()
             fileobj._check_exception()
 

@@ -31,7 +31,7 @@ from paramiko.py3compat import b
 try:
     import _thread as thread # Python 3.x
 except ImportError:
-    import thread # Python 2.5-2.7
+    import _thread # Python 2.5-2.7
 
 from . import _winapi
 
@@ -83,7 +83,7 @@ def _query_pageant(msg):
         return None
 
     # create a name for the mmap
-    map_name = 'PageantRequest%08x' % thread.get_ident()
+    map_name = 'PageantRequest%08x' % _thread.get_ident()
 
     pymap = _winapi.MemoryMap(map_name, _AGENT_MAX_MSGLEN,
         _winapi.get_security_attributes_for_user(),

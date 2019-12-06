@@ -27,7 +27,7 @@ from Crypto.PublicKey import DSA
 
 from paramiko import util
 from paramiko.common import zero_byte
-from paramiko.py3compat import long
+from paramiko.py3compat import int
 from paramiko.ssh_exception import SSHException
 from paramiko.message import Message
 from paramiko.ber import BER, BERException
@@ -99,7 +99,7 @@ class DSSKey (PKey):
 
     def sign_ssh_data(self, data):
         digest = sha1(data).digest()
-        dss = DSA.construct((long(self.y), long(self.g), long(self.p), long(self.q), long(self.x)))
+        dss = DSA.construct((int(self.y), int(self.g), int(self.p), int(self.q), int(self.x)))
         # generate a suitable k
         qsize = len(util.deflate_long(self.q, 0))
         while True:
@@ -134,7 +134,7 @@ class DSSKey (PKey):
         sigS = util.inflate_long(sig[20:], 1)
         sigM = util.inflate_long(sha1(data).digest(), 1)
 
-        dss = DSA.construct((long(self.y), long(self.g), long(self.p), long(self.q)))
+        dss = DSA.construct((int(self.y), int(self.g), int(self.p), int(self.q)))
         return dss.verify(sigM, (sigR, sigS))
 
     def _encode_key(self):

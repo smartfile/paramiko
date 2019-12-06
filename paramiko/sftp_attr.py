@@ -19,7 +19,7 @@
 import stat
 import time
 from paramiko.common import x80000000, o700, o70, xffffffff
-from paramiko.py3compat import long, b
+from paramiko.py3compat import int, b
 
 
 class SFTPAttributes (object):
@@ -134,11 +134,11 @@ class SFTPAttributes (object):
             msg.add_int(self.st_mode)
         if self._flags & self.FLAG_AMTIME:
             # throw away any fractional seconds
-            msg.add_int(long(self.st_atime))
-            msg.add_int(long(self.st_mtime))
+            msg.add_int(int(self.st_atime))
+            msg.add_int(int(self.st_mtime))
         if self._flags & self.FLAG_EXTENDED:
             msg.add_int(len(self.attr))
-            for key, val in self.attr.items():
+            for key, val in list(self.attr.items()):
                 msg.add_string(key)
                 msg.add_string(val)
         return
@@ -153,7 +153,7 @@ class SFTPAttributes (object):
             out += 'mode=' + oct(self.st_mode) + ' '
         if (self.st_atime is not None) and (self.st_mtime is not None):
             out += 'atime=%d mtime=%d ' % (self.st_atime, self.st_mtime)
-        for k, v in self.attr.items():
+        for k, v in list(self.attr.items()):
             out += '"%s"=%r ' % (str(k), v)
         out += ']'
         return out

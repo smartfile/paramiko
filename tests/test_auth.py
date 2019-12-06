@@ -32,7 +32,7 @@ from paramiko.py3compat import u
 from tests.loop import LoopSocket
 from tests.util import test_path
 
-_pwd = u('\u2022')
+_pwd = u('\\u2022')
 
 
 class NullServer (ServerInterface):

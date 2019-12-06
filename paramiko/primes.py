@@ -23,7 +23,7 @@ Utility functions for dealing with primes.
 import os
 
 from paramiko import util
-from paramiko.py3compat import byte_mask, long
+from paramiko.py3compat import byte_mask, int
 from paramiko.ssh_exception import SSHException
 from paramiko.common import *
 
@@ -68,7 +68,7 @@ class ModulusPack (object):
         tries = int(tries)
         size = int(size)
         generator = int(generator)
-        modulus = long(modulus, 16)
+        modulus = int(modulus, 16)
 
         # weed out primes that aren't at least:
         # type 2 (meets basic structural requirements)

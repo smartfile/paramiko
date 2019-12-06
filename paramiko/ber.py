@@ -16,7 +16,7 @@
 # along with Paramiko; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 from paramiko.common import max_byte, zero_byte
-from paramiko.py3compat import b, byte_ord, byte_chr, long
+from paramiko.py3compat import b, byte_ord, byte_chr, int
 
 import paramiko.util as util
 
@@ -116,7 +116,7 @@ class BER(object):
                 self.encode_tlv(1, max_byte)
             else:
                 self.encode_tlv(1, zero_byte)
-        elif (type(x) is int) or (type(x) is long):
+        elif (type(x) is int) or (type(x) is int):
             self.encode_tlv(2, util.deflate_long(x))
         elif type(x) is str:
             self.encode_tlv(4, x)

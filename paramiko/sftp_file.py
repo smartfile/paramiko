@@ -20,7 +20,7 @@
 SFTP file object
 """
 
-from __future__ import with_statement
+
 
 from binascii import hexlify
 from collections import deque
@@ -30,7 +30,7 @@ import time
 from paramiko.common import DEBUG
 
 from paramiko.file import BufferedFile
-from paramiko.py3compat import long
+from paramiko.py3compat import int
 from paramiko.sftp import CMD_CLOSE, CMD_READ, CMD_DATA, SFTPError, CMD_WRITE, \
     CMD_STATUS, CMD_FSTAT, CMD_ATTRS, CMD_FSETSTAT, CMD_EXTENDED
 from paramiko.sftp_attr import SFTPAttributes
@@ -120,7 +120,7 @@ class SFTPFile (BufferedFile):
         return None.  this guarantees nothing about the number of bytes
         collected in the prefetch buffer so far.
         """
-        k = [i for i in self._prefetch_data.keys() if i <= offset]
+        k = [i for i in list(self._prefetch_data.keys()) if i <= offset]
         if len(k) == 0:
             return None
         index = max(k)
@@ -165,7 +165,7 @@ class SFTPFile (BufferedFile):
             data = self._read_prefetch(size)
             if data is not None:
                 return data
-        t, msg = self.sftp._request(CMD_READ, self.handle, long(self._realpos), int(size))
+        t, msg = self.sftp._request(CMD_READ, self.handle, int(self._realpos), int(size))
         if t != CMD_DATA:
             raise SFTPError('Expected data')
         return msg.get_string()
@@ -173,7 +173,7 @@ class SFTPFile (BufferedFile):
     def _write(self, data):
         # may write less than requested if it would exceed max packet size
         chunk = min(len(data), self.MAX_REQUEST_SIZE)
-        self._reqs.append(self.sftp._async_request(type(None), CMD_WRITE, self.handle, long(self._realpos), data[:chunk]))
+        self._reqs.append(self.sftp._async_request(type(None), CMD_WRITE, self.handle, int(self._realpos), data[:chunk]))
         if not self.pipelined or (len(self._reqs) > 100 and self.sftp.sock.recv_ready()):
             while len(self._reqs):
                 req = self._reqs.popleft()
@@ -353,7 +353,7 @@ class SFTPFile (BufferedFile):
         .. versionadded:: 1.4
         """
         t, msg = self.sftp._request(CMD_EXTENDED, 'check-file', self.handle,
-                                    hash_algorithm, long(offset), long(length), block_size)
+                                    hash_algorithm, int(offset), int(length), block_size)
         ext = msg.get_text()
         alg = msg.get_text()
         data = msg.get_remainder()
@@ -461,7 +461,7 @@ class SFTPFile (BufferedFile):
         # a lot of them, so it may block.
         for offset, length in chunks:
             with self._prefetch_lock:
-                num = self.sftp._async_request(self, CMD_READ, self.handle, long(offset), int(length))
+                num = self.sftp._async_request(self, CMD_READ, self.handle, int(offset), int(length))
                 self._prefetch_extents[num] = (offset, length)
 
     def _async_response(self, t, msg, num):

@@ -31,7 +31,7 @@ import os
 import socket
 import select
 try:
-    import SocketServer
+    import socketserver
 except ImportError:
     import socketserver as SocketServer
 
@@ -46,12 +46,12 @@ DEFAULT_PORT = 4000
 g_verbose = True
 
 
-class ForwardServer (SocketServer.ThreadingTCPServer):
+class ForwardServer (socketserver.ThreadingTCPServer):
     daemon_threads = True
     allow_reuse_address = True
     
 
-class Handler (SocketServer.BaseRequestHandler):
+class Handler (socketserver.BaseRequestHandler):
 
     def handle(self):
         try:
@@ -170,7 +170,7 @@ def main():
         client.connect(server[0], server[1], username=options.user, key_filename=options.keyfile,
                        look_for_keys=options.look_for_keys, password=password)
     except Exception as e:
-        print('*** Failed to connect to %s:%d: %r' % (server[0], server[1], e))
+        print(('*** Failed to connect to %s:%d: %r' % (server[0], server[1], e)))
         sys.exit(1)
 
     verbose('Now forwarding port %d to %s:%d ...' % (options.port, remote[0], remote[1]))

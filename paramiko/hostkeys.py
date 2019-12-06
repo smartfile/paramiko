@@ -144,11 +144,11 @@ class HostKeys (MutableMapping):
                 self._hostkeys = hostkeys
 
             def __iter__(self):
-                for k in self.keys():
+                for k in list(self.keys()):
                     yield k
 
             def __len__(self):
-                return len(self.keys())
+                return len(list(self.keys()))
 
             def __delitem__(self, key):
                 for e in list(self._entries):
@@ -214,11 +214,11 @@ class HostKeys (MutableMapping):
         self._entries = []
 
     def __iter__(self):
-        for k in self.keys():
+        for k in list(self.keys()):
             yield k
 
     def __len__(self):
-        return len(self.keys())
+        return len(list(self.keys()))
 
     def __delitem__(self, key):
         k = self[key]
@@ -234,7 +234,7 @@ class HostKeys (MutableMapping):
         if len(entry) == 0:
             self._entries.append(HostKeyEntry([hostname], None))
             return
-        for key_type in entry.keys():
+        for key_type in list(entry.keys()):
             found = False
             for e in self._entries:
                 if (hostname in e.hostnames) and (e.key.get_name() == key_type):
@@ -255,7 +255,7 @@ class HostKeys (MutableMapping):
 
     def values(self):
         ret = []
-        for k in self.keys():
+        for k in list(self.keys()):
             ret.append(self.lookup(k))
         return ret
 

@@ -32,7 +32,7 @@ from paramiko.sftp import BaseSFTP, Message, SFTP_FAILURE, \
 from paramiko.sftp_si import SFTPServerInterface
 from paramiko.sftp_attr import SFTPAttributes
 from paramiko.common import DEBUG, ERROR
-from paramiko.py3compat import long, string_types, bytes_types, b
+from paramiko.py3compat import int, string_types, bytes_types, b
 from paramiko.server import SubsystemHandler
 
 
@@ -125,9 +125,9 @@ class SFTPServer (BaseSFTP, SubsystemHandler):
         self.server.session_ended()
         super(SFTPServer, self).finish_subsystem()
         # close any file handles that were left open (so we can return them to the OS quickly)
-        for f in self.file_table.values():
+        for f in list(self.file_table.values()):
             f.close()
-        for f in self.folder_table.values():
+        for f in list(self.folder_table.values()):
             f.close()
         self.file_table = {}
         self.folder_table = {}
@@ -184,7 +184,7 @@ class SFTPServer (BaseSFTP, SubsystemHandler):
         msg = Message()
         msg.add_int(request_number)
         for item in arg:
-            if isinstance(item, long):
+            if isinstance(item, int):
                 msg.add_int64(item)
             elif isinstance(item, int):
                 msg.add_int(item)

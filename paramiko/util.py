@@ -20,7 +20,7 @@
 Useful functions used by the rest of paramiko.
 """
 
-from __future__ import generators
+
 
 import array
 import errno
@@ -31,13 +31,13 @@ import threading
 import logging
 
 from paramiko.common import DEBUG, zero_byte, xffffffff, max_byte
-from paramiko.py3compat import PY2, long, byte_ord, b, byte_chr
+from paramiko.py3compat import PY2, int, byte_ord, b, byte_chr
 from paramiko.config import SSHConfig
 
 
 def inflate_long(s, always_positive=False):
     """turns a normalized byte string into a long-int (adapted from Crypto.Util.number)"""
-    out = long(0)
+    out = int(0)
     negative = 0
     if not always_positive and (len(s) > 0) and (byte_ord(s[0]) >= 0x80):
         negative = 1
@@ -51,7 +51,7 @@ def inflate_long(s, always_positive=False):
     for i in range(0, len(s), 4):
         out = (out << 32) + struct.unpack('>I', s[i:i+4])[0]
     if negative:
-        out -= (long(1) << (8 * len(s)))
+        out -= (int(1) << (8 * len(s)))
     return out
 
 deflate_zero = zero_byte if PY2 else 0
@@ -62,7 +62,7 @@ def deflate_long(n, add_sign_padding=True):
     """turns a long-int into a normalized byte string (adapted from Crypto.Util.number)"""
     # after much testing, this algorithm was deemed to be the fastest
     s = bytes()
-    n = long(n)
+    n = int(n)
     while (n != 0) and (n != -1):
         s = struct.pack('>I', n & xffffffff) + s
         n >>= 32
@@ -275,7 +275,7 @@ def retry_on_signal(function):
 
 class Counter (object):
     """Stateful counter for CTR mode crypto"""
-    def __init__(self, nbits, initial_value=long(1), overflow=long(0)):
+    def __init__(self, nbits, initial_value=int(1), overflow=int(0)):
         self.blocksize = nbits / 8
         self.overflow = overflow
         # start with value - 1 so we don't have to store intermediate values when counting
@@ -300,7 +300,7 @@ class Counter (object):
         return self.value.tostring()
 
     @classmethod
-    def new(cls, nbits, initial_value=long(1), overflow=long(0)):
+    def new(cls, nbits, initial_value=int(1), overflow=int(0)):
         return cls(nbits, initial_value=initial_value, overflow=overflow)
 
 

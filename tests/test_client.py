@@ -20,7 +20,7 @@
 Some unit tests for SSHClient.
 """
 
-from __future__ import with_statement
+
 
 import socket
 from tempfile import mkstemp
@@ -96,7 +96,7 @@ class SSHClientTest (unittest.TestCase):
 
     def _run(self, allowed_keys=None, delay=0):
         if allowed_keys is None:
-            allowed_keys = FINGERPRINTS.keys()
+            allowed_keys = list(FINGERPRINTS.keys())
         self.socks, addr = self.sockl.accept()
         self.ts = paramiko.Transport(self.socks)
         host_key = paramiko.RSAKey.from_private_key_file(test_path('test_rsa.key'))
@@ -245,13 +245,13 @@ class SSHClientTest (unittest.TestCase):
         os.close(fd)
 
         client = paramiko.SSHClient()
-        self.assertEquals(0, len(client.get_host_keys()))
+        self.assertEqual(0, len(client.get_host_keys()))
 
         host_id = '[%s]:%d' % (self.addr, self.port)
 
         client.get_host_keys().add(host_id, 'ssh-rsa', public_host_key)
-        self.assertEquals(1, len(client.get_host_keys()))
-        self.assertEquals(public_host_key, client.get_host_keys()[host_id]['ssh-rsa'])
+        self.assertEqual(1, len(client.get_host_keys()))
+        self.assertEqual(public_host_key, client.get_host_keys()[host_id]['ssh-rsa'])
 
         client.save_host_keys(localname)
 
@@ -312,7 +312,7 @@ class SSHClientTest (unittest.TestCase):
         with paramiko.SSHClient() as tc:
             self.tc = tc
             self.tc.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.assertEquals(0, len(self.tc.get_host_keys()))
+            self.assertEqual(0, len(self.tc.get_host_keys()))
             self.tc.connect(self.addr, self.port, username='slowdive', password='pygmalion')
 
             self.event.wait(1.0)
