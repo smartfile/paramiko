@@ -19,7 +19,7 @@
 import stat
 import time
 from paramiko.common import x80000000, o700, o70, xffffffff
-from paramiko.py3compat import int, b
+from paramiko.py3compat import b
 
 
 class SFTPAttributes (object):

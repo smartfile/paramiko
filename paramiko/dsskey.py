@@ -27,7 +27,6 @@ from Crypto.PublicKey import DSA
 
 from paramiko import util
 from paramiko.common import zero_byte
-from paramiko.py3compat import int
 from paramiko.ssh_exception import SSHException
 from paramiko.message import Message
 from paramiko.ber import BER, BERException

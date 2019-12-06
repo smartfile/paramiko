@@ -23,7 +23,7 @@ Utility functions for dealing with primes.
 import os
 
 from paramiko import util
-from paramiko.py3compat import byte_mask, int
+from paramiko.py3compat import byte_mask
 from paramiko.ssh_exception import SSHException
 from paramiko.common import *
 

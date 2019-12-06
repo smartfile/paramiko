@@ -32,7 +32,7 @@ from paramiko.sftp import BaseSFTP, Message, SFTP_FAILURE, \
 from paramiko.sftp_si import SFTPServerInterface
 from paramiko.sftp_attr import SFTPAttributes
 from paramiko.common import DEBUG, ERROR
-from paramiko.py3compat import int, string_types, bytes_types, b
+from paramiko.py3compat import string_types, bytes_types, b
 from paramiko.server import SubsystemHandler
 
 

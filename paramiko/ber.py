@@ -16,7 +16,7 @@
 # along with Paramiko; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 from paramiko.common import max_byte, zero_byte
-from paramiko.py3compat import b, byte_ord, byte_chr, int
+from paramiko.py3compat import b, byte_ord, byte_chr
 
 import paramiko.util as util
 

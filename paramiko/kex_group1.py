@@ -27,7 +27,7 @@ from hashlib import sha1
 from paramiko import util
 from paramiko.common import max_byte, zero_byte
 from paramiko.message import Message
-from paramiko.py3compat import byte_chr, int, byte_mask
+from paramiko.py3compat import byte_chr, byte_mask
 from paramiko.ssh_exception import SSHException
 
 

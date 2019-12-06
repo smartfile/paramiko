@@ -31,7 +31,7 @@ import threading
 import logging
 
 from paramiko.common import DEBUG, zero_byte, xffffffff, max_byte
-from paramiko.py3compat import PY2, int, byte_ord, b, byte_chr
+from paramiko.py3compat import PY2, byte_ord, b, byte_chr
 from paramiko.config import SSHConfig
 
 

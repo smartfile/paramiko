@@ -43,7 +43,7 @@ from hashlib import sha1
 from paramiko.common import *
 from paramiko import util
 from paramiko.message import Message
-from paramiko.py3compat import byte_chr, int, byte_mask, byte_ord
+from paramiko.py3compat import byte_chr, byte_mask, byte_ord
 from paramiko.ssh_exception import SSHException
 
 

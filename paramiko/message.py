@@ -24,7 +24,7 @@ import struct
 
 from paramiko import util
 from paramiko.common import zero_byte, max_byte, one_byte, asbytes
-from paramiko.py3compat import int, BytesIO, u, integer_types
+from paramiko.py3compat import BytesIO, u, integer_types
 
 
 class Message (object):
