@@ -257,7 +257,7 @@ class PKey (object):
         return data
 
     def _read_private_key(self, tag, f, password=None):
-        lines = f.readlines()
+        lines = list(map(lambda line: line.decode('utf-8'), f.readlines()))
         start = 0
         while (start < len(lines)) and (lines[start].strip() != '-----BEGIN ' + tag + ' PRIVATE KEY-----'):
             start += 1
